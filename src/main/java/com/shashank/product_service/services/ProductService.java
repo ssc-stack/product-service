@@ -2,10 +2,8 @@ package com.shashank.product_service.services;
 
 import com.shashank.product_service.entities.Product;
 import com.shashank.product_service.repositories.ProductRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.awt.color.ProfileDataException;
 import java.util.List;
 import java.util.Optional;
 
