@@ -41,11 +41,10 @@ public class ProductService {
     }
 
     public boolean deleteProductById(Long id) {
-        Optional<Product> productOptional = productRepository.findById(id);
-        if (!productOptional.isPresent()) {
-            return false;
+        if (productRepository.existsById(id)) {
+            productRepository.deleteById(id);
+            return true;
         }
-        productRepository.deleteById(id);
-        return true;
+        return false;
     }
 }

@@ -43,7 +43,7 @@ public class ProductController {
     public ResponseEntity<String> deleteProductById(@PathVariable Long id) {
         boolean deleteStatus = productService.deleteProductById(id);
         if (!deleteStatus) {
-            ResponseEntity.status(404).body("Product not found with id: " + id);
+            return ResponseEntity.status(404).body("Product not found with id: " + id);
         }
 
         return ResponseEntity.ok("Product deleted successfully with id: " + id);
