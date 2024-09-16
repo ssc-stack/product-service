@@ -1,6 +1,7 @@
 package com.shashank.product_service.controllers;
 
 import com.shashank.product_service.entities.Product;
+import com.shashank.product_service.exceptions.ProductNotFoundException;
 import com.shashank.product_service.services.ProductService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,15 @@ public class ProductController {
 
     public ProductController(ProductService productService) { // Constructor Injection
         this.productService = productService;
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Product> findProductById(@PathVariable Long id) {
+        Optional<Product> productOptional = productService.findProductById(id);
+        if (!productOptional.isPresent()) {
+            throw new ProductNotFoundException("Product not found with id: " + id);
+        }
+        return ResponseEntity.ok(productOptional.get());
     }
 
     @PostMapping
@@ -34,7 +44,7 @@ public class ProductController {
     public ResponseEntity<Product> updateProductById(@PathVariable Long id, @RequestBody Product product) {
         Optional<Product> productOptional = productService.updateProductById(id, product);
         if (!productOptional.isPresent()) {
-            return ResponseEntity.notFound().build();
+            throw new ProductNotFoundException("Product not found with id: " + id);
         }
         return ResponseEntity.ok(productOptional.get());
     }
@@ -43,7 +53,7 @@ public class ProductController {
     public ResponseEntity<String> deleteProductById(@PathVariable Long id) {
         boolean deleteStatus = productService.deleteProductById(id);
         if (!deleteStatus) {
-            return ResponseEntity.status(404).body("Product not found with id: " + id);
+            throw new ProductNotFoundException("Product not found with id: " + id);
         }
 
         return ResponseEntity.ok("Product deleted successfully with id: " + id);
